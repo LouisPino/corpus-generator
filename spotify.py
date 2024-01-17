@@ -27,7 +27,7 @@ headers = {
 
 
 # Artist ID
-artist_ids = ['2YZyLoL8N0Wb9xBt1NhZWg', '5j93hwFBNo29RJMsWvtzj8']
+artist_ids = ['2YZyLoL8N0Wb9xBt1NhZWg', '5j93hwFBNo29RJMsWvtzj8', ]
 
 
 # Get artist's albums
