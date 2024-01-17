@@ -1,25 +1,34 @@
 import requests
 import time
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # Your client credentials
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
 
 # Get access token
 auth_url = 'https://accounts.spotify.com/api/token'
 auth_response = requests.post(auth_url, {
     'grant_type': 'client_credentials',
-    'client_id': client_id,
-    'client_secret': client_secret,
+    'client_id': CLIENT_ID,
+    'client_secret': CLIENT_SECRET,
 })
 access_token = auth_response.json()['access_token']
+
 
 # Set up the headers
 headers = {
     'Authorization': f'Bearer {access_token}',
 }
 
+
 # Artist ID
 artist_ids = ['2YZyLoL8N0Wb9xBt1NhZWg', '5j93hwFBNo29RJMsWvtzj8']
+
 
 # Get artist's albums
 for idx, id in enumerate(artist_ids):
@@ -58,4 +67,4 @@ for idx, id in enumerate(artist_ids):
         if track_info:
             print(track_info)
             print()
-        time.sleep(0.01)  
+        time.sleep(0.01)
