@@ -1,4 +1,4 @@
-def get_all_artist_songs(ids):
+def get_all_artist_songs(names):
     import requests
     import time
     import os
@@ -23,17 +23,29 @@ def get_all_artist_songs(ids):
     headers = {
         'Authorization': f'Bearer {access_token}',
     }
+    
+    artist_names = names.split(", ")
+    # get artist IDs
+    artist_ids = []
+    for name in artist_names:
+        search_url = f'https://api.spotify.com/v1/search?q={name}&type=artist'
+        search_response = requests.get(search_url, headers=headers)
+        artist_ids.append(search_response.json()['artists']['items'][0]['id']) 
+    print(artist_ids)
+        
+
+
 
 
     # Artist ID
-    # artist_ids = ['2YZyLoL8N0Wb9xBt1NhZWg', '5j93hwFBNo29RJMsWvtzj8', ]
-    artist_ids = ids.split(", ")
+    # ids = '0H1y0xBrMd7qj7ljAnYUTn' #my artist id
+    # artist_ids = ids.split(", ")
     all_tracks = []
+    
     # Get artist's albums
-    for idx, id in enumerate(artist_ids):
-        albums_url = f'https://api.spotify.com/v1/artists/{artist_ids[idx]}/albums'
+    for id in artist_ids:
+        albums_url = f'https://api.spotify.com/v1/artists/{id}/albums'
         albums_response = requests.get(albums_url, headers=headers)
-        print(albums_response)
         albums = albums_response.json()['items']
 
         track_ids = []

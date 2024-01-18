@@ -12,4 +12,4 @@ def index():
         return render_template("index.html", data=data, test_data = [{"test_key": request.form.get("artist_id")}])
         # return render_template("index.html", test_data = [{"test_key": request.form.get("artist_id")}])
     elif request.method == "GET":
-        return render_template("index.html", data=[{"test_key": "test value"}])
+        return render_template("index.html")
