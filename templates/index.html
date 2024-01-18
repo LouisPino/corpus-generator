@@ -1,23 +1,25 @@
 {%extends "layout.html"%}
 
 {% block main %}
-<form method="post" action="/">
-    <input type="text" name="artist_id" placeholder="Artist ID #">
-    <button type="submit">COMPILE</button>
-</form>
-<p>Kendrick = 2YZyLoL8N0Wb9xBt1NhZWg</p>
-<p>Zelooperz = 5j93hwFBNo29RJMsWvtzj8</p>
-<p>Vik Vaughn = 0wIb0PhwT3disoWykRhq6V</p>
-<p>me = 0H1y0xBrMd7qj7ljAnYUTn</p>
-{% if data %}
-{%for track in data%}
-<h2>{{track[0]}}</h2>
-{%for key, value in track[1].items()%}
-<p>{{key}}: {{value}}</p>
-{%endfor%}
-{%endfor%}
-{%else%}
-<p>No data to display</p>
-{%endif%}
+<div class="form-div">
+    <form method="post" action="/">
+        <input type="text" name="artist_names" placeholder="Artist Names">
+        <button type="submit">COMPILE</button>
+    </form>
+</div>
 
+<div class="data-div">
+    {% if data %}
+    {%for track in data%}
+    <div class="track-card">
+        <h2>{{track[0]}}</h2>
+        {%for key, value in track[1].items()%}
+        <p>{{key}}: {{value}}</p>
+        {%endfor%}
+    </div>
+    {%endfor%}
+    {%else%}
+    <p>No data to display</p>
+    {%endif%}
+</div>
 {% endblock %}
