@@ -1,1 +1,1 @@
-web: gunicorn corpus-generator.wsgi:application
+web: gunicorn corpus_generator.wsgi:application
