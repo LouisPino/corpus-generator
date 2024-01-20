@@ -3,8 +3,11 @@
 {% block main %}
 <div class="form-div">
     <h2>USAGE: Type the name of an artists, hit compile, and wait. Depending on artists catalog, could take a long
-        time.<br />For multiple artists, separate by commas.<br />To test, use artists with small catalogs ("Louis Pino,
-        Aardwolf")</h2>
+        time.<br /><br />For multiple artists, separate by a comma and space.<br /><br />To test, use artists with small
+        catalogs to minimize retrieval time.
+        <br /><br />Example: Louis Pino,
+        Aardwolf
+    </h2>
     <form method="post" action="/">
         <input type="text" name="artist_names" placeholder="Artist Names">
         <button type="submit">COMPILE</button>

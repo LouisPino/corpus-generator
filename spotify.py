@@ -40,7 +40,6 @@ def get_all_artist_songs(names):
         albums.extend(albums_response.json()['items'])
      
      
-    print(albums)
     # Get album's tracks
     all_tracks = []
     track_ids = []
