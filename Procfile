@@ -1,1 +1,1 @@
-web: gunicorn corpus_generator.main:app
+web: gunicorn main:app
