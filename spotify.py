@@ -32,27 +32,26 @@ def get_all_artist_songs(names):
         search_response = requests.get(search_url, headers=headers)
         artist_ids.append(search_response.json()['artists']['items'][0]['id']) 
         
-    
+    albums = []
     # Get artist's albums
     for id in artist_ids:
         albums_url = f'https://api.spotify.com/v1/artists/{id}/albums'
         albums_response = requests.get(albums_url, headers=headers)
-        albums = albums_response.json()['items']
+        albums.extend(albums_response.json()['items'])
      
      
+    print(albums)
     # Get album's tracks
-
-        all_tracks = []
-        track_ids = []
-        for album in albums:
+    all_tracks = []
+    track_ids = []
+    for album in albums:
             tracks_url = album['href'] + '/tracks'
             tracks_response = requests.get(tracks_url, headers=headers)
             tracks = tracks_response.json()['items']
             
             for track in tracks:
                 track_ids.append(track['id'])
-
-        def get_track_info(track_id):
+    def get_track_info(track_id):
             track_url = f'https://api.spotify.com/v1/tracks/{track_id}'
             track_response = requests.get(track_url, headers=headers)
             if track_response.status_code == 200:
@@ -69,14 +68,14 @@ def get_all_artist_songs(names):
             else:
                 print(f"Failed to fetch track {track_id}: Status code {track_response.status_code}")
                 return None
-        track_data=[]
-        for track_id in track_ids:
+    track_data=[]
+    for track_id in track_ids:
             track_info = get_track_info(track_id)
             if track_info:
                 track_data.append(track_info)
                 
             time.sleep(0.01)
-        all_tracks.extend(track_data)
+    all_tracks.extend(track_data)
     return all_tracks
 
 
