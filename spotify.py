@@ -63,7 +63,6 @@ def get_all_artist_songs(names, dancey_val, dancey=False):
     track_data=[]
     for track_id in track_ids:
             track_info = get_track_info(track_id)
-            print(dancey)
             if track_info:
                 if dancey:                   
                     if track_info["danceability"] >= int(dancey_val)/100:
@@ -106,6 +105,7 @@ def get_track_info(track_id):
 def download_csv(data):
      output = StringIO()
      headers = ["title", "artist", "album", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"]
+    
      writer = csv.DictWriter(output, fieldnames = headers)
      writer.writeheader()
      pythonized = ast.literal_eval((data))

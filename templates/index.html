@@ -20,7 +20,6 @@
     {% if data %}
     <form action="/download-csv" method="POST">
         <button>DOWNLOAD CSV</button>
-        <input type="hidden" name="name" value="Aardwolf">
         <input type="hidden" name="data" value="{{ data }}">
     </form>
     {%for track in data%}
