@@ -3,6 +3,12 @@ import time
 import os
 from dotenv import load_dotenv
 load_dotenv()
+from io import StringIO 
+import csv 
+import json 
+import ast
+
+
 
 # Your client credentials
 CLIENT_ID = os.getenv("CLIENT_ID")
@@ -88,4 +94,13 @@ def get_track_info(track_id):
 
 
 def download_csv(data):
-     print(data)
+     output = StringIO()
+     headers = ["title", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "type", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"]
+     writer = csv.DictWriter(output, fieldnames = headers)
+     writer.writeheader()
+     pythonized = ast.literal_eval((data))
+     for track in pythonized:
+        track[1]["title"] = track[0]
+        writer.writerow(track[1])
+     output.seek(0)
+     return output.getvalue()
