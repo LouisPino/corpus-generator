@@ -43,11 +43,11 @@ def get_all_artist_songs(names):
 
     # Get artist's albums
     albums = []
-    for id in artist_ids:
+    for idx, id in enumerate(artist_ids):
         albums_url = f'https://api.spotify.com/v1/artists/{id}/albums'
         albums_response = requests.get(albums_url, headers=headers)
         albums.extend(albums_response.json()['items'])
-     
+    
      
     # Get album's tracks
     all_tracks = []
@@ -79,6 +79,8 @@ def get_track_info(track_id):
             if track_response.status_code == 200:
                 track_resp = track_response.json()
                 track_name = track_resp['name']
+                track_album = track_resp["album"]["name"]
+                track_artist = track_resp["artists"][0]["name"]
             else:
                 return
             track_url = f'https://api.spotify.com/v1/audio-features/{track_id}'
@@ -86,21 +88,23 @@ def get_track_info(track_id):
             if track_response.status_code == 200:
                 track_resp2 = track_response.json()
                 track_vals = track_resp2
-                return [track_name, track_vals]
+                return [track_name, track_vals, track_album, track_artist]
             else:
                 print(f"Failed to fetch track {track_id}: Status code {track_response.status_code}")
                 return None
-            
+            # add artist and album names here.
 
 
 def download_csv(data):
      output = StringIO()
-     headers = ["title", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "type", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"]
+     headers = ["title", "artist", "album", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "type", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"]
      writer = csv.DictWriter(output, fieldnames = headers)
      writer.writeheader()
      pythonized = ast.literal_eval((data))
      for track in pythonized:
         track[1]["title"] = track[0]
+        track[1]["album"] = track[2]
+        track[1]["artist"] = track[3]
         writer.writerow(track[1])
      output.seek(0)
      return output.getvalue()
