@@ -16,7 +16,7 @@ def index():
 @app.route("/download-csv", methods=["GET", "POST"])
 def download():
     if request.method == "POST":
-        output = download_csv(list(request.form.items())[1][1])
+        output = download_csv(request.form["data"])
         return Response(output, 
                     mimetype='text/csv',
                     headers={'Content-Disposition': 'attachment; filename=corpus.csv'})

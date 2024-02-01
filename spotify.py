@@ -96,6 +96,7 @@ def get_track_info(track_id):
                 track_vals["title"] = track_name
                 track_vals["album"] = track_album
                 track_vals["artist"] = track_artist
+                del track_vals["type"]
                 return track_vals
             else:
                 print(f"Failed to fetch track {track_id}: Status code {track_response.status_code}")
@@ -105,7 +106,6 @@ def get_track_info(track_id):
 def download_csv(data):
      output = StringIO()
      headers = ["title", "artist", "album", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"]
-    
      writer = csv.DictWriter(output, fieldnames = headers)
      writer.writeheader()
      pythonized = ast.literal_eval((data))
