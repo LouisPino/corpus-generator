@@ -31,7 +31,7 @@ headers = {
 }
 
 
-def get_all_artist_songs(names):
+def get_all_artist_songs(names, dancey_val, dancey=False):
     # get artist IDs
     artist_names = names.split(", ")
     artist_ids = []
@@ -43,7 +43,7 @@ def get_all_artist_songs(names):
 
     # Get artist's albums
     albums = []
-    for idx, id in enumerate(artist_ids):
+    for id in artist_ids:
         albums_url = f'https://api.spotify.com/v1/artists/{id}/albums'
         albums_response = requests.get(albums_url, headers=headers)
         albums.extend(albums_response.json()['items'])
@@ -63,8 +63,14 @@ def get_all_artist_songs(names):
     track_data=[]
     for track_id in track_ids:
             track_info = get_track_info(track_id)
+            print(dancey)
             if track_info:
-                track_data.append(track_info)
+                if dancey:                   
+                    if track_info["danceability"] >= int(dancey_val)/100:
+                        track_data.append(track_info)
+                else:
+                    track_data.append(track_info)
+                     
                 
             time.sleep(0.01)
     all_tracks.extend(track_data)
@@ -95,12 +101,11 @@ def get_track_info(track_id):
             else:
                 print(f"Failed to fetch track {track_id}: Status code {track_response.status_code}")
                 return None
-            # add artist and album names here.
 
 
 def download_csv(data):
      output = StringIO()
-     headers = ["title", "artist", "album", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "type", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"]
+     headers = ["title", "artist", "album", "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"]
      writer = csv.DictWriter(output, fieldnames = headers)
      writer.writeheader()
      pythonized = ast.literal_eval((data))
