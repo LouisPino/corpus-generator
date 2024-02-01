@@ -23,8 +23,8 @@
     </form>
     {%for track in data%}
     <div class="track-card">
-        <h2>{{track[0]}}</h2>
-        {%for key, value in track[1].items()%}
+        <h2>{{track.title}}</h2>
+        {% for key, value in track.items() %}
         <p>{{key}}: {{value}}</p>
         {%endfor%}
     </div>

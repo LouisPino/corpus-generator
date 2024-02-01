@@ -88,7 +88,10 @@ def get_track_info(track_id):
             if track_response.status_code == 200:
                 track_resp2 = track_response.json()
                 track_vals = track_resp2
-                return [track_name, track_vals, track_album, track_artist]
+                track_vals["title"] = track_name
+                track_vals["album"] = track_album
+                track_vals["artist"] = track_artist
+                return track_vals
             else:
                 print(f"Failed to fetch track {track_id}: Status code {track_response.status_code}")
                 return None
@@ -102,9 +105,6 @@ def download_csv(data):
      writer.writeheader()
      pythonized = ast.literal_eval((data))
      for track in pythonized:
-        track[1]["title"] = track[0]
-        track[1]["album"] = track[2]
-        track[1]["artist"] = track[3]
-        writer.writerow(track[1])
+        writer.writerow(track)
      output.seek(0)
      return output.getvalue()
