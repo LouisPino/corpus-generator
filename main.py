@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, request, session, Response
-from spotify import get_all_artist_songs, download_csv
+from spotify import get_all_artist_songs, download_csv, get_artists
 from multidict import MultiDict 
 
 
@@ -12,6 +12,15 @@ def index():
         return render_template("index.html", data=data)
     elif request.method == "GET":
         return render_template("index.html")
+
+@app.route("/get-artists", methods=["GET", "POST"])
+def get_artists_route():
+    if request.method == "POST":
+        print(request.form.get("popularity-val"))
+        data = get_artists(request.form.get("genre"), True if request.form.get("popularity")=="on" else False, request.form.get("popularity-val"), limit= request.form.get("limit"))
+        return render_template("get-artists.html", data=data)
+    elif request.method == "GET":
+        return render_template("get-artists.html")
 
 @app.route("/download-csv", methods=["GET", "POST"])
 def download():
