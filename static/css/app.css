@@ -35,6 +35,11 @@ header {
     padding: 6px;
 }
 
+.artist-names-area {
+    width: 80%;
+    min-height: 100px;
+}
+
 footer {
     background-color: aliceblue;
     width: 100%;

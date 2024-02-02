@@ -20,10 +20,8 @@
 
 <div class="data-div">
     {% if data %}
-    <form action="/download-csv" method="POST">
-        <button>DOWNLOAD CSV</button>
-        <input type="hidden" name="data" value="{{ data }}">
-    </form>
+    <p>PASTE ME INTO GET TRACKS INPUT FIELD:</p>
+    <textarea class="artist-names-area">{{names}}</textarea>
     {%for artist in data%}
     <div class="track-card">
         <h2>{{artist.name}}</h2>

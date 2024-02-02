@@ -16,9 +16,8 @@ def index():
 @app.route("/get-artists", methods=["GET", "POST"])
 def get_artists_route():
     if request.method == "POST":
-        print(request.form.get("popularity-val"))
         data = get_artists(request.form.get("genre"), True if request.form.get("popularity")=="on" else False, request.form.get("popularity-val"), limit= request.form.get("limit"))
-        return render_template("get-artists.html", data=data)
+        return render_template("get-artists.html", data=data, names = ', '.join([artist["name"] for artist in data]))
     elif request.method == "GET":
         return render_template("get-artists.html")
 
