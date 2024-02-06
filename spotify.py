@@ -120,7 +120,8 @@ def get_artists(genre, popularity, popularity_val, limit):
     offset = 0
     hit_pop_val = False
     def request_artists():
-        search_url = f'https://api.spotify.com/v1/search?q=genre%3A{genre}&type=artist&limit=10&offset={offset}'
+        search_url = f'https://api.spotify.com/v1/search?q=genre%3A%22{genre}%22&type=artist&limit=10&offset={offset}'
+        print(search_url)
         search_response = requests.get(search_url, headers=headers)
         print(search_response)
         for item in search_response.json()['artists']['items']:

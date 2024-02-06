@@ -3,10 +3,10 @@
 {% block main %}
 <div class="form-div">
     <h1>GET ARTISTS BASED ON GENRE AND POPULARITY</h1>
-    <h2>USAGE: Type the name of genres, separated by a comma and space. Set popularity value.
+    <h2>USAGE: Type the name of one genre. Set popularity value or Amount.
     </h2>
     <form method="post" action="/get-artists">
-        <input type="text" name="genre" placeholder="Genre Names" required>
+        <input type="text" name="genre" placeholder="Genre Names">
         <label> Above variable % popularity
             <input type="checkbox" name="popularity">
             <input type="number" name="popularity-val" value="5">
