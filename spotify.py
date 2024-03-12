@@ -43,8 +43,9 @@ class Tracks:
         for name in artist_names:
             search_url = f'https://api.spotify.com/v1/search?q={name}&type=artist'
             search_response = requests.get(search_url, headers=headers)
-            artist_ids.append(search_response.json()['artists']['items'][0]['id']) 
-        return artist_ids
+            yield search_response.json()['artists']['items'][0]['id']
+            # artist_ids.append(search_response.json()['artists']['items'][0]['id']) 
+        # return artist_ids
         
     def get_artist_albums(artist_ids):
         # Get artist's albums
@@ -133,13 +134,14 @@ class Artists:
                 if item["popularity"] > int(popularity_val):
                     artists.append({"name": item["name"], "popularity": item["popularity"]})
                 else:
-                        return True
+                    return True
 
         if popularity: 
             while not hit_pop_val:
                 hit_pop_val = request_artists()
                 offset+=10
         else:           
+            print(limit)
             while len(artists) < int(limit):
                 hit_pop_val = request_artists()
                 offset+=10
