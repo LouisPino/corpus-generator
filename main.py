@@ -54,3 +54,7 @@ def download():
                     headers={'Content-Disposition': 'attachment; filename=corpus.csv'})
     elif request.method == "GET":
         return render_template("index.html")
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

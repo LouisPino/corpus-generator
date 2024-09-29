@@ -105,7 +105,8 @@ class Tracks:
                 del track_vals["type"]
                 return track_vals
             else:
-                print(f"Failed to fetch track {track_id}: Status code {track_response.status_code}")
+                print(track_response.headers)
+                print(f"Failed to fetch track {track_id}: Status code {track_response.status_code}. Wait.")
                 return None
 
 class Csv:
@@ -127,14 +128,15 @@ class Artists:
         hit_pop_val = False
         def request_artists():
             search_url = f'https://api.spotify.com/v1/search?q=genre%3A%22{genre}%22&type=artist&limit=10&offset={offset}'
-            print(search_url)
             search_response = requests.get(search_url, headers=headers)
-            print(search_response)
-            for item in search_response.json()['artists']['items']:
-                if item["popularity"] > int(popularity_val):
-                    artists.append({"name": item["name"], "popularity": item["popularity"]})
-                else:
-                    return True
+            if search_response.status_code == 200:
+                for item in search_response.json()['artists']['items']:
+                        if item["popularity"] > int(popularity_val):
+                            artists.append({"name": item["name"], "popularity": item["popularity"]})
+                        else:
+                            return True
+            else:
+                print(search_response.status_code)
 
         if popularity: 
             while not hit_pop_val:
@@ -142,8 +144,9 @@ class Artists:
                 offset+=10
         else:           
             print(limit)
-            while len(artists) < int(limit):
-                hit_pop_val = request_artists()
+            while offset < int(limit):
+                request_artists()
+                print("hit")
                 offset+=10
         
         return artists
