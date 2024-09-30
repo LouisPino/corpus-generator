@@ -138,8 +138,7 @@ class Artists:
             else:
                 print(f"Error, Code {search_response.status_code}")
 
-   
-        while len(artists) < int(limit) and offset <= 980:
+        while isinstance(limit, str) and len(artists) < int(limit) and offset <= 980:
                 request_artists()
                 offset+=10
         
