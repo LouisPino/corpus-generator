@@ -32,7 +32,7 @@ def index():
 @app.route("/get-artists", methods=["GET", "POST"])
 def get_artists_route():
     if request.method == "POST":
-        data = Artists.get(request.form.get("genre"), True if request.form.get("popularity")=="on" else False, request.form.get("popularity-val"), request.form.get("limit"))
+        data = Artists.get(request.form.get("genre"), request.form.get("popularity-val"), request.form.get("limit"))
         return render_template("get-artists.html", data=data, names = ', '.join([artist["name"] for artist in data]))
     else:
         return render_template("get-artists.html")
@@ -40,7 +40,7 @@ def get_artists_route():
 
 @app.route("/update_artists", methods=["GET", "POST"])
 def update_artists():
-        return Response(stream_with_context(Artists.get(request.form.get("genre"), False, request.form.get("popularity-val"), request.form.get("limit"))), mimetype='text/event-stream')
+        return Response(stream_with_context(Artists.get(request.form.get("genre"), request.form.get("popularity-val"), request.form.get("limit"))), mimetype='text/event-stream')
 
 
 

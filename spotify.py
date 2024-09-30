@@ -122,31 +122,25 @@ class Csv:
         return output.getvalue()
 
 class Artists: 
-    def get(genre, popularity, popularity_val, limit):
+    def get(genre, popularity_val, limit):
         artists = []
         offset = 0
-        hit_pop_val = False
         def request_artists():
             search_url = f'https://api.spotify.com/v1/search?q=genre%3A%22{genre}%22&type=artist&limit=10&offset={offset}'
             search_response = requests.get(search_url, headers=headers)
             if search_response.status_code == 200:
                 for item in search_response.json()['artists']['items']:
-                        if item["popularity"] > int(popularity_val):
+                        print(item)
+                        if item["popularity"] >= int(popularity_val) and len(artists) < int(limit):
                             artists.append({"name": item["name"], "popularity": item["popularity"]})
                         else:
                             return True
             else:
-                print(search_response.status_code)
+                print(f"Error, Code {search_response.status_code}")
 
-        if popularity: 
-            while not hit_pop_val:
-                hit_pop_val = request_artists()
-                offset+=10
-        else:           
-            print(limit)
-            while offset < int(limit):
+   
+        while len(artists) < int(limit) and offset <= 980:
                 request_artists()
-                print("hit")
                 offset+=10
         
         return artists
