@@ -40,6 +40,11 @@ header {
     min-height: 100px;
 }
 
+.loading-text {
+    visibility: hidden;
+    position: absolute;
+}
+
 footer {
     background-color: aliceblue;
     width: 100%;

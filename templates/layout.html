@@ -14,6 +14,8 @@
         <a href="/get-artists">GET ARTISTS</a>
     </header>
     <main>
+        <h2 class="loading-text">LOADING, Do not navigate away from this
+            page! Depending on the size of your request, this may take several minutes.</h2>
         {% block main %}{% endblock %}
     </main>
 
@@ -23,5 +25,13 @@
 
 </body>
 
+<script>
+    const submitEl = document.querySelector(".form")
+    const loadingEl = document.querySelector(".loading-text")
+    submitEl.addEventListener("submit", () => {
+        loadingEl.style.visibility = "visible"
+        loadingEl.style.position = "relative"
+    })
+</script>
 
 </html>

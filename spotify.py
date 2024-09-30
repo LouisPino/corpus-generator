@@ -130,7 +130,6 @@ class Artists:
             search_response = requests.get(search_url, headers=headers)
             if search_response.status_code == 200:
                 for item in search_response.json()['artists']['items']:
-                        print(item)
                         if item["popularity"] >= int(popularity_val) and len(artists) < int(limit):
                             artists.append({"name": item["name"], "popularity": item["popularity"]})
                         else:
@@ -138,7 +137,7 @@ class Artists:
             else:
                 print(f"Error, Code {search_response.status_code}")
 
-        while isinstance(limit, str) and len(artists) < int(limit) and offset <= 980:
+        while isinstance(limit, str) and len(artists) < int(limit) and offset <= 1000:
                 request_artists()
                 offset+=10
         

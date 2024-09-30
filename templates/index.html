@@ -3,16 +3,16 @@
 {% block main %}
 <div class="form-div">
     <h1>GET SONGS FROM ARTISTS</h1>
-    <h2>USAGE: Type the name of artists, separated by a comma and space.<br />Example: Louis Pino,
-        Aardwolf
+    <h2>USAGE: Type the name of artists, separated by a comma and space.<br />Example: "Louis Pino,
+        Aardwolf, Modern Baseball"
     </h2>
-    <form method="post" action="/">
+    <form method="post" action="/" class="form">
         <input type="text" name="artist_names" placeholder="Artist Names">
         <label> Above variable % danceability
             <input type="checkbox" name="dancey">
             <input type="number" name="dancey-val">
         </label>
-        <button type="submit">COMPILE</button>
+        <button type="submit" class="submit-btn">COMPILE</button>
     </form>
 </div>
 

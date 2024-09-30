@@ -5,16 +5,15 @@
     <h1>GET ARTISTS BASED ON GENRE AND POPULARITY</h1>
     <h2>USAGE: Type the name of one genre. Set popularity value or Amount.
     </h2>
-    <form method="post" action="/get-artists">
+    <form method="post" action="/get-artists" class="form">
         <input type="text" name="genre" placeholder="Genre Names">
         <label> Above variable % popularity
-            <input type="checkbox" name="popularity">
             <input type="number" name="popularity-val" value="5">
         </label>
-        <label> Amount
-            <input type="number" name="limit" value="5">
+        <label> Max Amount
+            <input type="number" name="limit" placeholder="0-1000" max="1000" title="Amount of artists to compile.">
         </label>
-        <button type="submit">COMPILE</button>
+        <button type="submit" class="submit-btn">COMPILE</button>
     </form>
 </div>
 
@@ -34,8 +33,5 @@
 </div>
 
 <script src="{{ url_for('static', filename='scripts/updateArtists.js') }}">
-
-
-
 </script>
 {% endblock %}
