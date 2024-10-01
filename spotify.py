@@ -24,18 +24,17 @@ auth_response = requests.post(auth_url, {
 })
 access_token = auth_response.json()['access_token']
 
-
 # Set up the headers
 headers = {
     'Authorization': f'Bearer {access_token}',
 }
 
 class Tracks:
-    def get_all_artist_songs(names, dancey_val, dancey=False):
+    def get_all_artist_songs(names, filters):
         # get artist IDs
         artist_ids = Tracks.get_artist_ids(names)
         albums = Tracks.get_artist_albums(artist_ids)
-        return Tracks.get_album_tracks(albums, dancey_val, dancey)
+        return Tracks.get_album_tracks(albums, filters)
     
     def get_artist_ids(names):
         artist_names = names.split(", ")
@@ -56,7 +55,7 @@ class Tracks:
             albums.extend(albums_response.json()['items'])
         return albums
         
-    def get_album_tracks(albums, dancey_val, dancey=False):    
+    def get_album_tracks(albums, filters):    
         # Get album's tracks
         all_tracks = []
         track_ids = []
@@ -64,24 +63,33 @@ class Tracks:
                 tracks_url = album['href'] + '/tracks'
                 tracks_response = requests.get(tracks_url, headers=headers)
                 tracks = tracks_response.json()['items']
-                
                 for track in tracks:
                     track_ids.append(track['id'])
         
         track_data=[]
         for track_id in track_ids:
                 track_info = Tracks.get_track_info(track_id)
-                if track_info:
-                    if dancey:                   
-                        if track_info["danceability"] >= int(dancey_val)/100:
+                if track_info == 429:
+                     all_tracks.extend(track_data)
+                     return (all_tracks, 429)
+                valid = True
+                if track_info: 
+                        for k in filters.keys():
+                            if k == "tempo" or k == "loudness":
+                                 if track_info[k] < int(filters[k]):
+                                    valid = False
+                                    break
+                            elif track_info[k] < int(filters[k])/100:
+                                 valid = False
+                                 break
+                                            
+                        if valid:
                             track_data.append(track_info)
-                    else:
-                        track_data.append(track_info)
                         
                     
                 time.sleep(0.01)
         all_tracks.extend(track_data)
-        return all_tracks
+        return (all_tracks, 200)
 
     def get_track_info(track_id):
         # get track data
@@ -104,9 +112,10 @@ class Tracks:
                 track_vals["artist"] = track_artist
                 del track_vals["type"]
                 return track_vals
+            elif track_response.status_code == 429:
+                 return 429
             else:
-                print(track_response.headers)
-                print(f"Failed to fetch track {track_id}: Status code {track_response.status_code}. Wait.")
+                print(f"Failed to fetch track {track_id}: Status code {track_response.status_code}.")
                 return None
 
 class Csv:

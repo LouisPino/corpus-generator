@@ -24,8 +24,16 @@ def stream():
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        data = Tracks.get_all_artist_songs(request.form.get("artist_names"), request.form.get("dancey-val"), dancey = True if request.form.get("dancey") == "on" else False, )
-        return render_template("index.html", data=data)
+        filters = {}
+        keys = request.form.keys()
+        for key in keys:
+            filters[key] = request.form.get(key) if request.form.get(key) != "" else 0
+        del filters["artist_names"]
+
+        data = Tracks.get_all_artist_songs(request.form.get("artist_names"), filters)
+        tracks = data[0]
+        error = int(data[1])
+        return render_template("index.html", tracks=tracks, error=error)
     elif request.method == "GET":
         return render_template("index.html")
 

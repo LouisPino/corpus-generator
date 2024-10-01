@@ -45,6 +45,13 @@ header {
     position: absolute;
 }
 
+.track-filters {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+
 footer {
     background-color: aliceblue;
     width: 100%;

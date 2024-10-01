@@ -8,13 +8,45 @@
     </h2>
     <form method="post" action="/" class="form">
         <input type="text" name="artist_names" placeholder="Artist Names">
-        <label> Above variable % danceability
-            <input type="checkbox" name="dancey">
-            <input type="number" name="dancey-val">
-        </label>
+        <div class="track-filters">
+            <label> Above % danceability
+                <input type="number" name="danceability" value="0">
+            </label>
+            <label> Above % energy
+                <input type="number" name="energy" value="0">
+            </label>
+            <label> Above % speechiness
+                <input type="number" name="speechiness" value="0">
+            </label>
+            <label> Above % acousticness
+                <input type="number" name="acousticness" value="0">
+            </label>
+            <label> Above % instrumentalness
+                <input type="number" name="instrumentalness" value="0">
+            </label>
+            <label> Above % liveness
+                <input type="number" name="liveness" value="0">
+            </label>
+            <label> Above % valence
+                <input type="number" name="valence" value="0">
+            </label>
+            <label> Above tempo
+                <input type="number" name="tempo" value="0">
+            </label>
+            <label> Above loudness
+                <input type="number" name="loudness" value="-70">
+            </label>
+        </div>
         <button type="submit" class="submit-btn">COMPILE</button>
     </form>
 </div>
+{% if error == 429 %}
+<div>
+    <h3>You have encountered a 429 Error! This means you have exceeded Spotify's rate limit. Wait at least 30
+        seconds, and consider shortening your query by searching for fewer artists at a time. If this persists, you may
+        have to wait up to 12 hours.</h3>
+</div>
+{% endif %}
 
 <div class="data-div">
     {% if data %}
