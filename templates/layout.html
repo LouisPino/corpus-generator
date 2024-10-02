@@ -19,7 +19,7 @@
         <h2 class="loading-text">LOADING, Do not navigate away from this
             page! Depending on the size of your request, this may take several minutes.</h2>
         {% block main %}{% endblock %}
-        <btn class="test-btn">TEST FETCH</btn>
+        <!-- <btn class="test-btn">TEST FETCH</btn> -->
     </main>
 
     <footer>
@@ -29,12 +29,24 @@
 </body>
 
 <script>
-    const submitEl = document.querySelector(".form")
+    function generateArtistCard(name, popularity) {
+        return `<div class="track-card"> <h2>${name}</h2><p>Popularity: ${popularity}</p></div>`
+    }
+    function generateTrackCard(name, popularity) {
+        return `<div class="track-card"> <h2>${name}</h2><p>Popularity: ${popularity}</p></div>`
+    }
+
+    const submitEl = document.querySelector(".submit-btn")
     const loadingEl = document.querySelector(".loading-text")
     const mainEl = document.querySelector("main")
     const artistsEl = document.querySelector(".data-div-artists")
     const tracksEl = document.querySelector(".data-div")
     const testBtnEl = document.querySelector(".test-btn")
+    const noArtistsEl = document.querySelector(".no-artists")
+    const inputEls = document.querySelectorAll("input")
+    const namesEl = document.querySelector(".artist-names")
+
+
     submitEl.addEventListener("submit", () => {
         loadingEl.style.visibility = "visible"
         loadingEl.style.position = "relative"
@@ -48,20 +60,31 @@
             console.log('Connected to the server');
         });
 
-
-        testBtnEl.addEventListener("click", () => {
-            console.log("hit")
-            socket.emit('get_artists', {
-                genre: 'pop',
-                'popularity-val': '50',
-                limit: '100'
-            });
-
+        socket.on("complete", (msg) => {
+            loadingEl.textContent = "Retrieval Complete!"
         })
 
+
+        submitEl.addEventListener("click", (e) => {
+            e.preventDefault()
+            artistsEl.innerHTML = ""
+            socket.emit('get_artists', {
+                genre: inputEls[0].value,
+                'popularity-val': inputEls[1].value,
+                limit: inputEls[2].value
+            });
+            loadingEl.style.visibility = "visible"
+            loadingEl.style.position = "relative"
+            loadingEl.textContent = "LOADING, Do not navigate away from this page! Depending on the size of your request, this may take several minutes."
+        })
         // Listen for artist data from backend
         socket.on('artists', (msg) => {
-            artistsEl.append(msg.data["name"])
+            if (noArtistsEl) {
+                noArtistsEl.remove()
+            }
+            artistsEl.innerHTML += generateArtistCard(msg.data.name, msg.data.popularity)
+            namesEl.textContent += msg.data.name + ", "
+
         });
     });
 </script>

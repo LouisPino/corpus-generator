@@ -32,7 +32,6 @@ def index():
 @app.route("/get-artists", methods=["GET", "POST"])
 def get_artists_route():
     if request.method == "POST":
-        # trigger_generator()
         return render_template("get-artists.html", 
                             #    data=data, names = ', '.join([artist["name"] for artist in data])
                             )
@@ -59,16 +58,16 @@ def download():
 
 @socketio.on('get_artists')
 def handle_get_artists(data):  # Note: Removed async here
-    print("hit")
     genre = data.get("genre")
     popularity_val = data.get("popularity-val")
     limit = data.get("limit")
 
     # Assuming Artists.get() yields data progressively
     for artist in Artists.get(genre, popularity_val, limit):
-        print(artist)
         socketio.emit('artists', {'type': 'artists', 'data': artist}, room=request.sid)
         eventlet.sleep(0)  # Yield control to allow the event loop to process other events
+    send_message({'type': "complete", 'data': "artists"})
+    
 
 
 @socketio.on('connect')
@@ -85,7 +84,9 @@ def send_message(msg):
         socketio.emit('artists', {'data': msg["data"]})
     elif msg["type"] == "tracks":
         socketio.emit('tracks', {'data': msg["data"]})    
+    elif msg["type"] == "complete":
+        socketio.emit('complete', {'data': msg["data"]})    
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5000)
+    socketio.run(app, host="0.0.0.0", port=5000, debug=True)

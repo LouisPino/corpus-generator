@@ -17,21 +17,21 @@
     </form>
 </div>
 
+<div class="artist-names-area">
+    <p class="artist-names"></p>
+</div>
 <div class="data-div-artists">
     {% if data %}
-    <p>PASTE ME INTO GET TRACKS INPUT FIELD:</p>
-    <textarea class="artist-names-area">{{names}}</textarea>
-    {%for artist in data%}
+    <!-- {%for artist in data%}
     <div class="track-card">
         <h2>{{artist.name}}</h2>
         <p>Popularity: {{artist.popularity}}</p>
     </div>
-    {%endfor%}
+    {%endfor%} -->
     {%else%}
-    <p>No artists to display</p>
+    <p class="no-artists">No artists to display</p>
     {%endif%}
 </div>
 
-<script src="{{ url_for('static', filename='scripts/updateArtists.js') }}">
-</script>
+
 {% endblock %}
