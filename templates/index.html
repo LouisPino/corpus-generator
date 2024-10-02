@@ -7,37 +7,37 @@
         Aardwolf, Modern Baseball"
     </h2>
     <form method="post" action="/" class="form">
-        <input type="text" name="artist_names" placeholder="Artist Names">
+        <input type="text" name="artist_names" placeholder="Artist Names" class="input-tracks">
         <div class="track-filters">
             <label> Above % danceability
-                <input type="number" name="danceability" value="0">
+                <input type="number" name="danceability" value="0" class="input-tracks">
             </label>
             <label> Above % energy
-                <input type="number" name="energy" value="0">
+                <input type="number" name="energy" value="0" class="input-tracks">
             </label>
             <label> Above % speechiness
-                <input type="number" name="speechiness" value="0">
+                <input type="number" name="speechiness" value="0" class="input-tracks">
             </label>
             <label> Above % acousticness
-                <input type="number" name="acousticness" value="0">
+                <input type="number" name="acousticness" value="0" class="input-tracks">
             </label>
             <label> Above % instrumentalness
-                <input type="number" name="instrumentalness" value="0">
+                <input type="number" name="instrumentalness" value="0" class="input-tracks">
             </label>
             <label> Above % liveness
-                <input type="number" name="liveness" value="0">
+                <input type="number" name="liveness" value="0" class="input-tracks">
             </label>
             <label> Above % valence
-                <input type="number" name="valence" value="0">
+                <input type="number" name="valence" value="0" class="input-tracks">
             </label>
             <label> Above tempo
-                <input type="number" name="tempo" value="0">
+                <input type="number" name="tempo" value="0" class="input-tracks">
             </label>
             <label> Above loudness
-                <input type="number" name="loudness" value="-70">
+                <input type="number" name="loudness" value="-70" class="input-tracks">
             </label>
         </div>
-        <button type="submit" class="submit-btn">COMPILE</button>
+        <button type="button" class="submit-btn-tracks">COMPILE</button>
     </form>
 </div>
 {% if error == 429 %}

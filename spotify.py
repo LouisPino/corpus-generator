@@ -30,11 +30,12 @@ headers = {
 }
 
 class Tracks:
-    def get_all_artist_songs(names, filters):
+    def get_all_artist_songs(data):
         # get artist IDs
-        artist_ids = Tracks.get_artist_ids(names)
+        artist_ids = Tracks.get_artist_ids(data["artist_names"])
         albums = Tracks.get_artist_albums(artist_ids)
-        return Tracks.get_album_tracks(albums, filters)
+        del data["artist_names"]
+        return Tracks.get_album_tracks(albums, data)
     
     def get_artist_ids(names):
         artist_names = names.split(", ")
@@ -85,9 +86,6 @@ class Tracks:
                                             
                         if valid:
                             track_data.append(track_info)
-                            
-                        
-                    
                 time.sleep(0.01)
         all_tracks.extend(track_data)
         return (all_tracks, 200)

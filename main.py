@@ -1,5 +1,6 @@
 import eventlet
 eventlet.monkey_patch()
+
 from flask import Flask, redirect, render_template, request, session, Response
 from flask_socketio import SocketIO, emit
 import asyncio
@@ -67,6 +68,15 @@ def handle_get_artists(data):  # Note: Removed async here
         socketio.emit('artists', {'type': 'artists', 'data': artist}, room=request.sid)
         eventlet.sleep(0)  # Yield control to allow the event loop to process other events
     send_message({'type': "complete", 'data': "artists"})
+
+
+@socketio.on('get_tracks')
+def handle_get_tracks(data):  # Note: Removed async here
+    # Assuming Artists.get() yields data progressively
+    for track in Tracks.get_all_artist_songs(data):
+        socketio.emit('tracks', {'type': 'tracks', 'data': track}, room=request.sid)
+        eventlet.sleep(0)  # Yield control to allow the event loop to process other events
+    send_message({'type': "complete", 'data': "tracks"})
     
 
 

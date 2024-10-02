@@ -6,14 +6,15 @@
     <h2>USAGE: Type the name of one genre. Set popularity value or Amount.
     </h2>
     <form method="post" action="/get-artists" class="form">
-        <input type="text" name="genre" placeholder="Genre Names">
+        <input class="input-artists" type="text" name="genre" placeholder="Genre Names">
         <label> Above variable % popularity
-            <input type="number" name="popularity-val" value="5">
+            <input class="input-artists" type="number" name="popularity-val" value="5">
         </label>
         <label> Max Amount
-            <input type="number" name="limit" placeholder="0-1000" max="1000" title="Amount of artists to compile.">
+            <input class="input-artists" type="number" name="limit" placeholder="0-1000" max="1000"
+                title="Amount of artists to compile.">
         </label>
-        <button type="submit" class="submit-btn">COMPILE</button>
+        <button type="button" class="submit-btn-artists">COMPILE</button>
     </form>
 </div>
 

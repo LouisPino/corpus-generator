@@ -36,24 +36,21 @@
         return `<div class="track-card"> <h2>${name}</h2><p>Popularity: ${popularity}</p></div>`
     }
 
-    const submitEl = document.querySelector(".submit-btn")
+    const artistSubmitEl = document.querySelector(".submit-btn-artists")
+    const tracksSubmitEl = document.querySelector(".submit-btn-tracks")
     const loadingEl = document.querySelector(".loading-text")
     const mainEl = document.querySelector("main")
     const artistsEl = document.querySelector(".data-div-artists")
     const tracksEl = document.querySelector(".data-div")
     const testBtnEl = document.querySelector(".test-btn")
     const noArtistsEl = document.querySelector(".no-artists")
-    const inputEls = document.querySelectorAll("input")
+    const inputElsArtists = document.querySelectorAll(".input-artists")
+    const inputElsTracks = document.querySelectorAll(".input-tracks")
     const namesEl = document.querySelector(".artist-names")
-
-
-    submitEl.addEventListener("submit", () => {
-        loadingEl.style.visibility = "visible"
-        loadingEl.style.position = "relative"
-    })
 
     document.addEventListener("DOMContentLoaded", () => {
         var socket = io.connect('http://' + document.domain + ':' + location.port);
+
 
         // Send request to get artists
         socket.on('connect', () => {
@@ -64,8 +61,21 @@
             loadingEl.textContent = "Retrieval Complete!"
         })
 
+        console.log(tracksSubmitEl)
+        tracksSubmitEl?.addEventListener("click", (e) => {
+            e.preventDefault()
+            let data = {}
+            for (el of inputElsTracks) {
+                data[el.name] = el.value
+            }
+            console.log(data)
+            socket.emit('get_tracks', data);
+            loadingEl.style.visibility = "visible"
+            loadingEl.style.position = "relative"
+            loadingEl.textContent = "LOADING, Do not navigate away from this page! Depending on the size of your request, this may take several minutes."
+        })
 
-        submitEl.addEventListener("click", (e) => {
+        artistSubmitEl?.addEventListener("click", (e) => {
             e.preventDefault()
             artistsEl.innerHTML = ""
             socket.emit('get_artists', {
@@ -77,6 +87,14 @@
             loadingEl.style.position = "relative"
             loadingEl.textContent = "LOADING, Do not navigate away from this page! Depending on the size of your request, this may take several minutes."
         })
+
+
+
+        function sendSocketTracks() {
+            cosnsole.log(socket)
+        }
+
+
         // Listen for artist data from backend
         socket.on('artists', (msg) => {
             if (noArtistsEl) {
