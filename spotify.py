@@ -85,6 +85,7 @@ class Tracks:
                                             
                         if valid:
                             track_data.append(track_info)
+                            
                         
                     
                 time.sleep(0.01)
@@ -140,6 +141,7 @@ class Artists:
             if search_response.status_code == 200:
                 for item in search_response.json()['artists']['items']:
                         if item["popularity"] >= int(popularity_val) and len(artists) < int(limit):
+                            yield {"name": item["name"], "popularity": item["popularity"]}
                             artists.append({"name": item["name"], "popularity": item["popularity"]})
                         else:
                             return True
@@ -147,7 +149,6 @@ class Artists:
                 print(f"Error, Code {search_response.status_code}")
 
         while isinstance(limit, str) and len(artists) < int(limit) and offset <= 1000:
-                request_artists()
+                for artist in request_artists():
+                     yield artist
                 offset+=10
-        
-        return artists

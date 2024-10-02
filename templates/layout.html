@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, width=device-width">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
     <title>Corpus Generator</title>
 </head>
@@ -17,6 +19,7 @@
         <h2 class="loading-text">LOADING, Do not navigate away from this
             page! Depending on the size of your request, this may take several minutes.</h2>
         {% block main %}{% endblock %}
+        <btn class="test-btn">TEST FETCH</btn>
     </main>
 
     <footer>
@@ -28,10 +31,39 @@
 <script>
     const submitEl = document.querySelector(".form")
     const loadingEl = document.querySelector(".loading-text")
+    const mainEl = document.querySelector("main")
+    const artistsEl = document.querySelector(".data-div-artists")
+    const tracksEl = document.querySelector(".data-div")
+    const testBtnEl = document.querySelector(".test-btn")
     submitEl.addEventListener("submit", () => {
         loadingEl.style.visibility = "visible"
         loadingEl.style.position = "relative"
     })
+
+    document.addEventListener("DOMContentLoaded", () => {
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Send request to get artists
+        socket.on('connect', () => {
+            console.log('Connected to the server');
+        });
+
+
+        testBtnEl.addEventListener("click", () => {
+            console.log("hit")
+            socket.emit('get_artists', {
+                genre: 'pop',
+                'popularity-val': '50',
+                limit: '100'
+            });
+
+        })
+
+        // Listen for artist data from backend
+        socket.on('artists', (msg) => {
+            artistsEl.append(msg.data["name"])
+        });
+    });
 </script>
 
 </html>

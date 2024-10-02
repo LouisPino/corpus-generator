@@ -1,23 +1,15 @@
-from flask import Flask, redirect, render_template, request, session, Response, stream_with_context
+import eventlet
+eventlet.monkey_patch()
+from flask import Flask, redirect, render_template, request, session, Response
+from flask_socketio import SocketIO, emit
+import asyncio
 from spotify import Tracks, Csv, Artists
 from multidict import MultiDict 
 import time
 
 
 app = Flask(__name__, static_url_path="/static")
-# SSE CONTINUOUS RENDERING USING STREAM_WITH_CONTEXT
-def generate_data():
-    # Simulating a process that fetches and yields data incrementally
-    for i in range(10):  # Example loop to represent data fetching
-        # Fetch data from Spotify API or perform processing here
-        time.sleep(1)
-        yield f"data: {i}\n\n"
-
-@app.route('/stream', methods=["GET"])
-def stream():
-    return Response(stream_with_context(generate_data()), mimetype='text/event-stream')
-
-
+socketio = SocketIO(app, async_mode='eventlet')  # Use 'eventlet' for async mode
 
 
 
@@ -40,15 +32,14 @@ def index():
 @app.route("/get-artists", methods=["GET", "POST"])
 def get_artists_route():
     if request.method == "POST":
-        data = Artists.get(request.form.get("genre"), request.form.get("popularity-val"), request.form.get("limit"))
-        return render_template("get-artists.html", data=data, names = ', '.join([artist["name"] for artist in data]))
+        # trigger_generator()
+        return render_template("get-artists.html", 
+                            #    data=data, names = ', '.join([artist["name"] for artist in data])
+                            )
+
     else:
         return render_template("get-artists.html")
 
-
-@app.route("/update_artists", methods=["GET", "POST"])
-def update_artists():
-        return Response(stream_with_context(Artists.get(request.form.get("genre"), request.form.get("popularity-val"), request.form.get("limit"))), mimetype='text/event-stream')
 
 
 
@@ -64,5 +55,37 @@ def download():
         return render_template("index.html")
 
 
+
+
+@socketio.on('get_artists')
+def handle_get_artists(data):  # Note: Removed async here
+    print("hit")
+    genre = data.get("genre")
+    popularity_val = data.get("popularity-val")
+    limit = data.get("limit")
+
+    # Assuming Artists.get() yields data progressively
+    for artist in Artists.get(genre, popularity_val, limit):
+        print(artist)
+        socketio.emit('artists', {'type': 'artists', 'data': artist}, room=request.sid)
+        eventlet.sleep(0)  # Yield control to allow the event loop to process other events
+
+
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')
+
+@app.route('/send_message')
+def send_message(msg):
+    if msg["type"] == "artists":
+        socketio.emit('artists', {'data': msg["data"]})
+    elif msg["type"] == "tracks":
+        socketio.emit('tracks', {'data': msg["data"]})    
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, host="0.0.0.0", port=5000)

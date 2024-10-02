@@ -26,6 +26,14 @@ header {
     align-items: center;
 }
 
+.data-div-artists {
+    background-color: aliceblue;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .track-card {
     color: white;
     background-color: rgb(73, 73, 255);
