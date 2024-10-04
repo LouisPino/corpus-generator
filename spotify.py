@@ -35,7 +35,9 @@ class Tracks:
         artist_ids = Tracks.get_artist_ids(data["artist_names"])
         albums = Tracks.get_artist_albums(artist_ids)
         del data["artist_names"]
-        return Tracks.get_album_tracks(albums, data)
+        for track in Tracks.get_album_tracks(albums, data):
+             print(track)
+             yield track
     
     def get_artist_ids(names):
         artist_names = names.split(", ")
@@ -43,9 +45,9 @@ class Tracks:
         for name in artist_names:
             search_url = f'https://api.spotify.com/v1/search?q={name}&type=artist'
             search_response = requests.get(search_url, headers=headers)
-            yield search_response.json()['artists']['items'][0]['id']
-            # artist_ids.append(search_response.json()['artists']['items'][0]['id']) 
-        # return artist_ids
+            # return search_response.json()['artists']['items'][0]['id']
+            artist_ids.append(search_response.json()['artists']['items'][0]['id']) 
+        return artist_ids
         
     def get_artist_albums(artist_ids):
         # Get artist's albums
@@ -86,6 +88,7 @@ class Tracks:
                                             
                         if valid:
                             track_data.append(track_info)
+                            yield track_info
                 time.sleep(0.01)
         all_tracks.extend(track_data)
         return (all_tracks, 200)

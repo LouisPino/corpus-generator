@@ -48,7 +48,7 @@
 </div>
 {% endif %}
 
-<div class="data-div">
+<div class="data-div-tracks">
     {% if data %}
     <form action="/download-csv" method="POST">
         <button>DOWNLOAD CSV</button>
@@ -63,7 +63,7 @@
     </div>
     {%endfor%}
     {%else%}
-    <p>No data to display</p>
+    <p class="no-tracks">No data to display</p>
     {%endif%}
 </div>
 {% endblock %}

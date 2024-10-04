@@ -32,8 +32,14 @@
     function generateArtistCard(name, popularity) {
         return `<div class="track-card"> <h2>${name}</h2><p>Popularity: ${popularity}</p></div>`
     }
-    function generateTrackCard(name, popularity) {
-        return `<div class="track-card"> <h2>${name}</h2><p>Popularity: ${popularity}</p></div>`
+    function generateTrackCard(data) {
+        let cardStr = `<div class="track-card"> <h2>${data.title}</h2><h3>${data.artist}</h3>`
+        for (const [k, v] of Object.entries(data)) {
+            if (k != "title" && k != "artist")
+                cardStr += `<p>${k}: ${v}</p>`
+        }
+        cardStr += "</div>"
+        return cardStr
     }
 
     const artistSubmitEl = document.querySelector(".submit-btn-artists")
@@ -41,9 +47,10 @@
     const loadingEl = document.querySelector(".loading-text")
     const mainEl = document.querySelector("main")
     const artistsEl = document.querySelector(".data-div-artists")
-    const tracksEl = document.querySelector(".data-div")
+    const tracksEl = document.querySelector(".data-div-tracks")
     const testBtnEl = document.querySelector(".test-btn")
     const noArtistsEl = document.querySelector(".no-artists")
+    const noTracksEl = document.querySelector(".no-tracks")
     const inputElsArtists = document.querySelectorAll(".input-artists")
     const inputElsTracks = document.querySelectorAll(".input-tracks")
     const namesEl = document.querySelector(".artist-names")
@@ -79,9 +86,9 @@
             e.preventDefault()
             artistsEl.innerHTML = ""
             socket.emit('get_artists', {
-                genre: inputEls[0].value,
-                'popularity-val': inputEls[1].value,
-                limit: inputEls[2].value
+                genre: inputElsArtists[0].value,
+                'popularity-val': inputElsArtists[1].value,
+                limit: inputElsArtists[2].value
             });
             loadingEl.style.visibility = "visible"
             loadingEl.style.position = "relative"
@@ -103,6 +110,13 @@
             artistsEl.innerHTML += generateArtistCard(msg.data.name, msg.data.popularity)
             namesEl.textContent += msg.data.name + ", "
 
+        });
+        // Listen for track data from backend
+        socket.on('tracks', (msg) => {
+            if (noTracksEl) {
+                noTracksEl.remove()
+            }
+            tracksEl.innerHTML += generateTrackCard(msg.data)
         });
     });
 </script>
