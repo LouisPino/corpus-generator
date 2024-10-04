@@ -72,8 +72,7 @@ class Tracks:
         for track_id in track_ids:
                 track_info = Tracks.get_track_info(track_id)
                 if track_info == 429:
-                     all_tracks.extend(track_data)
-                     return (all_tracks, 429)
+                     return 429
                 valid = True
                 if track_info: 
                         for k in filters.keys():

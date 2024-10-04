@@ -74,8 +74,12 @@ def handle_get_artists(data):  # Note: Removed async here
 def handle_get_tracks(data):  # Note: Removed async here
     # Assuming Artists.get() yields data progressively
     for track in Tracks.get_all_artist_songs(data):
-        socketio.emit('tracks', {'type': 'tracks', 'data': track}, room=request.sid)
-        eventlet.sleep(0)  # Yield control to allow the event loop to process other events
+        if track == 429:
+            send_message({'type': "complete", 'data': "429"})
+            break
+        else:
+            socketio.emit('tracks', {'type': 'tracks', 'data': track}, room=request.sid)
+            eventlet.sleep(0)  # Yield control to allow the event loop to process other events
     send_message({'type': "complete", 'data': "tracks"})
     
 

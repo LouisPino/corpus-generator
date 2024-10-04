@@ -48,12 +48,12 @@
 </div>
 {% endif %}
 
+<form action="/download-csv" method="POST" class="csv-form">
+    <button>DOWNLOAD CSV</button>
+    <input type="hidden" name="data" value="{{ data }}">
+</form>
 <div class="data-div-tracks">
     {% if data %}
-    <form action="/download-csv" method="POST">
-        <button>DOWNLOAD CSV</button>
-        <input type="hidden" name="data" value="{{ data }}">
-    </form>
     {%for track in data%}
     <div class="track-card">
         <h2>{{track.title}}</h2>
