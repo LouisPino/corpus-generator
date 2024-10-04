@@ -78,7 +78,7 @@ def handle_get_tracks(data):  # Note: Removed async here
     for track in Tracks.get_all_artist_songs(data):
         if track == 429:
             send_message({'type': "complete", 'data': "429"})
-            break
+            return
         else:
             socketio.emit('tracks', {'type': 'tracks', 'data': track}, room=request.sid)
             eventlet.sleep(0)  # Yield control to allow the event loop to process other events

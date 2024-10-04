@@ -67,9 +67,10 @@
         });
 
         socket.on("complete", (msg) => {
-            loadingEl.textContent = "Retrieval Complete!"
             if (msg.data == 429) {
-                loadingEl.textContent += " You encountered a 429 error, meaning Spotify received too many requests, and decided to cut you off. Try waiting 30 seconds, and consider splitting up your query by artist to prevent this."
+                loadingEl.textContent = "You encountered a 429 error, meaning Spotify received too many requests, and decided to cut you off. Try waiting 30 seconds, and consider splitting up your query by artist to prevent this."
+            } else {
+                loadingEl.textContent = "Retrieval Complete!"
             }
             csvFormEl.style.visibility = "visible"
             csvInputEl.value = JSON.stringify(trackDataArr)
