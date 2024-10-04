@@ -7,6 +7,7 @@ import asyncio
 from spotify import Tracks, Csv, Artists
 from multidict import MultiDict 
 import time
+import json
 
 
 app = Flask(__name__, static_url_path="/static")
@@ -47,6 +48,7 @@ def get_artists_route():
 @app.route("/download-csv", methods=["GET", "POST"])
 def download():
     if request.method == "POST":
+        print(json.loads(request.form["data"]))
         output = Csv.download(request.form["data"])
         return Response(output, 
                     mimetype='text/csv',

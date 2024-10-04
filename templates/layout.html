@@ -55,7 +55,8 @@
     const inputElsTracks = document.querySelectorAll(".input-tracks")
     const namesEl = document.querySelector(".artist-names")
     const csvFormEl = document.querySelector(".csv-form")
-
+    const csvInputEl = document.querySelector(".csv-input")
+    let trackDataArr = []
     document.addEventListener("DOMContentLoaded", () => {
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
@@ -70,8 +71,8 @@
             if (msg.data == 429) {
                 loadingEl.textContent += " You encountered a 429 error, meaning Spotify received too many requests, and decided to cut you off. Try waiting 30 seconds, and consider splitting up your query by artist to prevent this."
             }
-            console.log(csvFormEl)
             csvFormEl.style.visibility = "visible"
+            csvInputEl.value = JSON.stringify(trackDataArr)
         })
 
         tracksSubmitEl?.addEventListener("click", (e) => {
@@ -82,7 +83,6 @@
             for (el of inputElsTracks) {
                 data[el.name] = el.value
             }
-            console.log(data)
             socket.emit('get_tracks', data);
             loadingEl.style.visibility = "visible"
             loadingEl.style.position = "relative"
@@ -125,6 +125,7 @@
                 noTracksEl.remove()
             }
             tracksEl.innerHTML += generateTrackCard(msg.data)
+            trackDataArr.push(msg.data)
         });
     });
 </script>
