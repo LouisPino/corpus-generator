@@ -85,6 +85,7 @@
         artistSubmitEl?.addEventListener("click", (e) => {
             e.preventDefault()
             artistsEl.innerHTML = ""
+            namesEl.textContent = ""
             socket.emit('get_artists', {
                 genre: inputElsArtists[0].value,
                 'popularity-val': inputElsArtists[1].value,

@@ -36,7 +36,6 @@ class Tracks:
         albums = Tracks.get_artist_albums(artist_ids)
         del data["artist_names"]
         for track in Tracks.get_album_tracks(albums, data):
-             print(track)
              yield track
     
     def get_artist_ids(names):
