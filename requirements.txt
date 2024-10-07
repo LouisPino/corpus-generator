@@ -137,7 +137,6 @@ nbclient==0.10.0
 nbconvert==7.16.4
 nbformat==5.10.4
 nest-asyncio==1.6.0
-networkx==3.3
 notebook==7.2.1
 notebook_shim==0.2.4
 numba==0.60.0
@@ -173,7 +172,6 @@ pydantic_core==2.18.4
 pydub==0.25.1
 pygame==2.6.0
 Pygments==2.16.1
-pyharp @ git+https://github.com/teamup-dev/pyharp.git@9f69c5343189a915ab0ad7818fbe472e9c8232b1
 pylint==2.12.2
 pyloudnorm==0.1.1
 pyparsing==3.1.2
