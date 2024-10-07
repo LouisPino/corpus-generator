@@ -42,8 +42,6 @@ cycler==0.12.1
 debugpy==1.8.1
 decorator==5.1.1
 defusedxml==0.7.1
-descript-audio-codec @ git+https://github.com/hugofloresgarcia/descript-audio-codec.git@2811707a5bdd4a7972abfdc905c7d7a57e4523c8
-descript-audiotools @ git+https://github.com/hugofloresgarcia/audiotools.git@cb3267e2325bb2d37d3d9d4b039cdc4a46934578
 distlib==0.3.6
 dj-database-url==2.1.0
 Django==4.2.6
