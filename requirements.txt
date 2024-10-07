@@ -164,13 +164,11 @@ psycopg2==2.9.7
 psycopg2-binary==2.9.9
 ptyprocess==0.7.0
 pure-eval==0.2.2
-PyAudio==0.2.12
 pycodestyle==2.8.0
 pycparser==2.21
 pydantic==2.7.4
 pydantic_core==2.18.4
 pydub==0.25.1
-pygame==2.6.0
 Pygments==2.16.1
 pylint==2.12.2
 pyloudnorm==0.1.1
