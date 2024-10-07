@@ -252,7 +252,6 @@ uri-template==1.3.0
 urllib3==1.26.16
 usb==0.0.83.dev0
 uvicorn==0.30.1
-vampnet @ file:///C:/Users/LJPin/vampnet
 vine==5.1.0
 virtualenv==20.23.0
 virtualenv-clone==0.5.7
@@ -267,7 +266,6 @@ whitenoise==6.5.0
 widgetsnbextension==4.0.11
 wrapt==1.13.3
 wsproto==1.2.0
-x-transformers @ git+https://github.com/hugofloresgarcia/x-transformers.git@aabee05d6bca6d74646156009159c55f8d27d884
 yapecs==0.0.8
 yarl==1.9.3
 zipp==3.17.0
