@@ -4,7 +4,7 @@ eventlet.monkey_patch()
 from flask import Flask, redirect, render_template, request, session, Response
 from flask_socketio import SocketIO, emit
 import asyncio
-from spotify import Tracks, Csv, Artists
+from spotify_module import Tracks, Csv, Artists
 from multidict import MultiDict 
 import time
 import json
