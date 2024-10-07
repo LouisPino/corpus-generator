@@ -10,7 +10,7 @@ import time
 import json
 
 
-app = Flask(__name__, static_url_path="/static")
+app = Flask(__name__, static_url_path="static")
 socketio = SocketIO(app, async_mode='eventlet')  # Use 'eventlet' for async mode
 
 
