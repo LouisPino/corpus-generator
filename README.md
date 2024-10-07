@@ -1,6 +1,6 @@
 # Corpus Generator
 
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <[URL HERE](https://youtu.be/1uwH6bPe1wo)>
 
 #### Description:
 
