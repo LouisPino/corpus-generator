@@ -11,7 +11,7 @@ import json
 
 
 app = Flask(__name__, static_url_path="/static")
-socketio = SocketIO(app, async_mode='eventlet')  # Use 'eventlet' for async mode
+socketio = SocketIO(app, async_mode='eventlet')
 
 
 
@@ -48,7 +48,6 @@ def get_artists_route():
 @app.route("/download-csv", methods=["GET", "POST"])
 def download():
     if request.method == "POST":
-        print(json.loads(request.form["data"]))
         output = Csv.download(request.form["data"])
         return Response(output, 
                     mimetype='text/csv',
@@ -60,28 +59,27 @@ def download():
 
 
 @socketio.on('get_artists')
-def handle_get_artists(data):  # Note: Removed async here
+def handle_get_artists(data):  
     genre = data.get("genre")
     popularity_val = data.get("popularity-val")
     limit = data.get("limit")
 
-    # Assuming Artists.get() yields data progressively
     for artist in Artists.get(genre, popularity_val, limit):
         socketio.emit('artists', {'type': 'artists', 'data': artist}, room=request.sid)
-        eventlet.sleep(0)  # Yield control to allow the event loop to process other events
+        eventlet.sleep(0)  
     send_message({'type': "complete", 'data': "artists"})
 
 
 @socketio.on('get_tracks')
-def handle_get_tracks(data):  # Note: Removed async here
-    # Assuming Artists.get() yields data progressively
+def handle_get_tracks(data):
+
     for track in Tracks.get_all_artist_songs(data):
         if track == 429:
             send_message({'type': "complete", 'data': "429"})
             return
         else:
             socketio.emit('tracks', {'type': 'tracks', 'data': track}, room=request.sid)
-            eventlet.sleep(0)  # Yield control to allow the event loop to process other events
+            eventlet.sleep(0)
     send_message({'type': "complete", 'data': "tracks"})
     
 
